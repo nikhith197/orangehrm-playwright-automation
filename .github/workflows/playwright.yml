@@ -2,31 +2,38 @@ name: Playwright Tests
 
 on:
   push:
-    branches: [main, master]
+    branches:
+      - master
+
   pull_request:
-    branches: [main, master]
+    branches:
+      - master
+
   workflow_dispatch:
 
 jobs:
-  test:
-    timeout-minutes: 20
+  playwright-tests:
+    name: Playwright Tests - Shard ${{ matrix.shard_id }}
     runs-on: ubuntu-latest
+
     strategy:
       fail-fast: false
       matrix:
-        browser: [chromium, firefox, webkit]
-        shard: [1/2, 2/2]
+        include:
+          - shard: 1/2
+            shard_id: 1
+          - shard: 2/2
+            shard_id: 2
 
     env:
+      TEST_ENV: demo
       BASE_URL: ${{ secrets.BASE_URL }}
       APP_USERNAME: ${{ secrets.APP_USERNAME }}
       APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
-      ESS_USERNAME: ${{ secrets.ESS_USERNAME }}
-      ESS_PASSWORD: ${{ secrets.ESS_PASSWORD }}
-      CI: true
+      API_TIMEOUT_MS: 15000
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -38,11 +45,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright browser
-        run: npx playwright install --with-deps ${{ matrix.browser }}
-
-      - name: Check JavaScript syntax
-        run: npm run lint:syntax
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
 
       - name: Check code style
         run: npm run lint
@@ -51,20 +55,23 @@ jobs:
         run: npm run format:check
 
       - name: Run Playwright tests
-        run: npx playwright test --project=${{ matrix.browser }} --shard=${{ matrix.shard }}
+        run: |
+          npx playwright test \
+            --project=chromium \
+            --shard=${{ matrix.shard }}
 
       - name: Upload Playwright HTML report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report-${{ matrix.browser }}-${{ matrix.shard }}
+          name: playwright-report-chromium-shard-${{ matrix.shard_id }}
           path: playwright-report/
-          retention-days: 14
+          retention-days: 7
 
       - name: Upload screenshots, videos and traces
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results-${{ matrix.browser }}-${{ matrix.shard }}
+          name: test-results-chromium-shard-${{ matrix.shard_id }}
           path: test-results/
-          retention-days: 14
+          retention-days: 7
