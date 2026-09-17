@@ -2,9 +2,7 @@ const { defineConfig, devices } = require('@playwright/test');
 require('dotenv').config();
 
 const baseURL =
-  process.env.APP_BASE_URL ||
-  process.env.BASE_URL ||
-  'https://opensource-demo.orangehrmlive.com';
+  process.env.APP_BASE_URL || process.env.BASE_URL || 'https://opensource-demo.orangehrmlive.com';
 
 module.exports = defineConfig({
   testDir: './tests',
@@ -20,7 +18,7 @@ module.exports = defineConfig({
   timeout: 30000,
 
   expect: {
-    timeout: 10000
+    timeout: 10000,
   },
 
   reporter: [
@@ -29,9 +27,9 @@ module.exports = defineConfig({
       'html',
       {
         outputFolder: 'playwright-report',
-        open: 'never'
-      }
-    ]
+        open: 'never',
+      },
+    ],
   ],
 
   use: {
@@ -45,29 +43,29 @@ module.exports = defineConfig({
 
     video: 'retain-on-failure',
 
-    trace: 'retain-on-failure'
+    trace: 'retain-on-failure',
   },
 
   projects: [
     {
       name: 'chromium',
       use: {
-        ...devices['Desktop Chrome']
-      }
+        ...devices['Desktop Chrome'],
+      },
     },
 
     {
       name: 'firefox',
       use: {
-        ...devices['Desktop Firefox']
-      }
+        ...devices['Desktop Firefox'],
+      },
     },
 
     {
       name: 'webkit',
       use: {
-        ...devices['Desktop Safari']
-      }
-    }
-  ]
+        ...devices['Desktop Safari'],
+      },
+    },
+  ],
 });

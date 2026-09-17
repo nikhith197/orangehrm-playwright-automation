@@ -4,50 +4,31 @@ class EmployeeDetailsPage {
   constructor(page) {
     this.page = page;
 
-    
     // Personal Details fields
-    
 
-    this.firstName = page.locator(
-      'input[name="firstName"]'
-    );
+    this.firstName = page.locator('input[name="firstName"]');
 
-    this.middleName = page.locator(
-      'input[name="middleName"]'
-    );
+    this.middleName = page.locator('input[name="middleName"]');
 
-    this.lastName = page.locator(
-      'input[name="lastName"]'
-    );
+    this.lastName = page.locator('input[name="lastName"]');
 
-    
     // Personal Details form
-    
 
-    this.personalDetailsForm = page
-      .locator('form')
-      .filter({
-        has: page.locator('input[name="firstName"]'),
-      });
+    this.personalDetailsForm = page.locator('form').filter({
+      has: page.locator('input[name="firstName"]'),
+    });
 
     // Save button belonging specifically to
     // the Personal Details form.
-    this.saveButton = this.personalDetailsForm.getByRole(
-      'button',
-      {
-        name: 'Save',
-        exact: true,
-      }
-    );
-
-   
+    this.saveButton = this.personalDetailsForm.getByRole('button', {
+      name: 'Save',
+      exact: true,
+    });
 
     this.employeeListLink = page.getByRole('link', {
       name: 'Employee List',
     });
   }
-
-  
 
   async assertLoaded() {
     await expect(this.firstName).toBeVisible({
@@ -59,9 +40,7 @@ class EmployeeDetailsPage {
     });
   }
 
-  
   // Create employee
-  
 
   async fillEmployee(data) {
     await this.assertLoaded();
@@ -73,9 +52,7 @@ class EmployeeDetailsPage {
     await this.lastName.fill(data.lastName);
   }
 
- 
   // Update last name
-  
 
   async updateLastName(lastName) {
     await this.assertLoaded();
@@ -88,19 +65,14 @@ class EmployeeDetailsPage {
       timeout: 10000,
     });
 
-    
     await this.lastName.click();
 
-    
     await this.lastName.press('Control+A');
 
-    
     await this.lastName.pressSequentially(lastName);
 
-   
     await this.lastName.press('Tab');
 
-    
     await expect(
       this.lastName,
       'Last name should contain the updated value before saving'
@@ -109,9 +81,7 @@ class EmployeeDetailsPage {
     });
   }
 
-  
   async save() {
-   
     await expect(this.personalDetailsForm).toBeVisible({
       timeout: 10000,
     });
@@ -124,10 +94,8 @@ class EmployeeDetailsPage {
       timeout: 10000,
     });
 
-    
     await this.saveButton.click();
 
-    
     await this.page.waitForLoadState('networkidle');
 
     await this.page.waitForTimeout(1000);
@@ -140,22 +108,14 @@ class EmployeeDetailsPage {
     });
   }
 
-  
   async assertEmployeeDetails(data) {
-    await expect(this.firstName).toHaveValue(
-      data.firstName
-    );
+    await expect(this.firstName).toHaveValue(data.firstName);
 
-    await expect(this.middleName).toHaveValue(
-      data.middleName
-    );
+    await expect(this.middleName).toHaveValue(data.middleName);
 
-    await expect(this.lastName).toHaveValue(
-      data.lastName
-    );
+    await expect(this.lastName).toHaveValue(data.lastName);
   }
 
-  
   async clickEmployeeList() {
     await expect(this.employeeListLink).toBeVisible({
       timeout: 10000,
@@ -163,12 +123,9 @@ class EmployeeDetailsPage {
 
     await this.employeeListLink.click();
 
-    await expect(this.page).toHaveURL(
-      /\/pim\/viewEmployeeList/,
-      {
-        timeout: 15000,
-      }
-    );
+    await expect(this.page).toHaveURL(/\/pim\/viewEmployeeList/, {
+      timeout: 15000,
+    });
   }
 }
 

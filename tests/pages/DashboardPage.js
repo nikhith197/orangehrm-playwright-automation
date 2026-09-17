@@ -9,11 +9,11 @@ class DashboardPage {
       .filter({ hasText: 'Dashboard' });
 
     this.pimMenu = page.getByRole('link', {
-      name: 'PIM'
+      name: 'PIM',
     });
 
     this.adminMenu = page.getByRole('link', {
-      name: 'Admin'
+      name: 'Admin',
     });
   }
 
@@ -21,7 +21,7 @@ class DashboardPage {
     await expect(this.page).toHaveURL(/\/dashboard\//);
 
     await expect(this.dashboardHeading).toBeVisible({
-      timeout: 15000
+      timeout: 15000,
     });
   }
 
@@ -29,7 +29,7 @@ class DashboardPage {
     await this.pimMenu.click();
 
     await expect(this.page).toHaveURL(/\/pim\//, {
-      timeout: 15000
+      timeout: 15000,
     });
   }
 
@@ -37,17 +37,17 @@ class DashboardPage {
     await this.adminMenu.click();
 
     await expect(this.page).toHaveURL(/\/admin\//, {
-      timeout: 15000
+      timeout: 15000,
     });
   }
 
   async assertAdminRoleAccess() {
     await expect(this.adminMenu).toBeVisible({
-      timeout: 10000
+      timeout: 10000,
     });
 
     await expect(this.pimMenu).toBeVisible({
-      timeout: 10000
+      timeout: 10000,
     });
   }
 }

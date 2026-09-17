@@ -1,8 +1,5 @@
 const { test, expect } = require('./fixtures/test');
-const {
-  uniqueEmployee,
-  employeeFullName,
-} = require('./utils/testData');
+const { uniqueEmployee, employeeFullName } = require('./utils/testData');
 const { createEmployee } = require('./utils/employeeActions');
 
 test(
@@ -49,16 +46,13 @@ test(
     let createdEmployee;
 
     await test.step('Verify employee exists through API', async () => {
-      createdEmployee =
-        await apiClient.assertEmployeeExists(originalName);
+      createdEmployee = await apiClient.assertEmployeeExists(originalName);
     });
 
     const employeeId = createdEmployee.employeeId;
 
     if (!employeeId) {
-      throw new Error(
-        `Could not determine employeeId for '${originalName}'.`
-      );
+      throw new Error(`Could not determine employeeId for '${originalName}'.`);
     }
 
     // ---------------------------------------------------------
@@ -75,42 +69,29 @@ test(
     // 4. SEARCH CREATED EMPLOYEE
     // ---------------------------------------------------------
 
-    await test.step(
-      `Search employee: ${originalName}`,
-      async () => {
-        await employeeListPage.searchByName(originalName);
+    await test.step(`Search employee: ${originalName}`, async () => {
+      await employeeListPage.searchByName(originalName);
 
-        await employeeListPage.assertEmployeePresent(
-          originalName
-        );
-      }
-    );
+      await employeeListPage.assertEmployeePresent(originalName);
+    });
 
     // ---------------------------------------------------------
     // 5. OPEN EMPLOYEE
     // ---------------------------------------------------------
 
-    await test.step(
-      `Open employee: ${originalName}`,
-      async () => {
-        await employeeListPage.openEmployee(originalName);
+    await test.step(`Open employee: ${originalName}`, async () => {
+      await employeeListPage.openEmployee(originalName);
 
-        await employeeDetailsPage.assertLoaded();
-      }
-    );
+      await employeeDetailsPage.assertLoaded();
+    });
 
     // ---------------------------------------------------------
     // 6. UPDATE EMPLOYEE
     // ---------------------------------------------------------
 
-    await test.step(
-      `Update employee last name to: ${updated.lastName}`,
-      async () => {
-        await employeeDetailsPage.updateLastName(
-          updated.lastName
-        );
-      }
-    );
+    await test.step(`Update employee last name to: ${updated.lastName}`, async () => {
+      await employeeDetailsPage.updateLastName(updated.lastName);
+    });
 
     // ---------------------------------------------------------
     // 7. SAVE EMPLOYEE
@@ -124,34 +105,24 @@ test(
     // 8. VERIFY UPDATED EMPLOYEE DETAILS IN UI
     // ---------------------------------------------------------
 
-    await test.step(
-      'Verify updated employee details in UI',
-      async () => {
-        await employeeDetailsPage.assertEmployeeDetails(
-          updated
-        );
-      }
-    );
+    await test.step('Verify updated employee details in UI', async () => {
+      await employeeDetailsPage.assertEmployeeDetails(updated);
+    });
 
     // ---------------------------------------------------------
     // 9. API VERIFICATION - SAME EMPLOYEE STILL EXISTS
     // ---------------------------------------------------------
 
-    await test.step(
-      'Verify updated employee through API',
-      async () => {
-        const updatedEmployee =
-          await apiClient.assertEmployeeExistsByEmployeeId(
-            employeeId,
-            employee.firstName
-          );
+    await test.step('Verify updated employee through API', async () => {
+      const updatedEmployee = await apiClient.assertEmployeeExistsByEmployeeId(
+        employeeId,
+        employee.firstName
+      );
 
-        expect(
-          updatedEmployee.firstName,
-          'API employee first name should remain unchanged'
-        ).toBe(employee.firstName);
-      }
-    );
+      expect(updatedEmployee.firstName, 'API employee first name should remain unchanged').toBe(
+        employee.firstName
+      );
+    });
 
     // ---------------------------------------------------------
     // 10. RETURN TO EMPLOYEE LIST
@@ -167,53 +138,34 @@ test(
     // 11. SEARCH UPDATED EMPLOYEE
     // ---------------------------------------------------------
 
-    await test.step(
-      `Search updated employee: ${updatedName}`,
-      async () => {
-        await employeeListPage.searchByName(updatedName);
+    await test.step(`Search updated employee: ${updatedName}`, async () => {
+      await employeeListPage.searchByName(updatedName);
 
-        await employeeListPage.assertEmployeePresent(
-          updatedName
-        );
-      }
-    );
+      await employeeListPage.assertEmployeePresent(updatedName);
+    });
 
     // ---------------------------------------------------------
     // 12. DELETE EMPLOYEE
     // ---------------------------------------------------------
 
-    await test.step(
-      `Delete employee: ${updatedName}`,
-      async () => {
-        await employeeListPage.deleteEmployee(updatedName);
-      }
-    );
+    await test.step(`Delete employee: ${updatedName}`, async () => {
+      await employeeListPage.deleteEmployee(updatedName);
+    });
 
     // ---------------------------------------------------------
     // 13. VERIFY EMPLOYEE DELETED FROM UI
     // ---------------------------------------------------------
 
-    await test.step(
-      'Verify employee is deleted from UI',
-      async () => {
-        await employeeListPage.assertEmployeeAbsent(
-          updatedName
-        );
-      }
-    );
+    await test.step('Verify employee is deleted from UI', async () => {
+      await employeeListPage.assertEmployeeAbsent(updatedName);
+    });
 
     // ---------------------------------------------------------
     // 14. API VERIFICATION - EMPLOYEE DELETED
     // ---------------------------------------------------------
 
-    await test.step(
-      'Verify employee is deleted through API',
-      async () => {
-        await apiClient.assertEmployeeAbsentByEmployeeId(
-          employeeId,
-          employee.firstName
-        );
-      }
-    );
+    await test.step('Verify employee is deleted through API', async () => {
+      await apiClient.assertEmployeeAbsentByEmployeeId(employeeId, employee.firstName);
+    });
   }
 );

@@ -5,15 +5,15 @@ class LoginPage {
     this.page = page;
 
     this.usernameInput = page.getByRole('textbox', {
-      name: /username/i
+      name: /username/i,
     });
 
     this.passwordInput = page.getByRole('textbox', {
-      name: /password/i
+      name: /password/i,
     });
 
     this.loginButton = page.getByRole('button', {
-      name: /login/i
+      name: /login/i,
     });
 
     this.loginError = page.locator('.oxd-alert-content-text');
@@ -21,7 +21,7 @@ class LoginPage {
 
   async goto() {
     await this.page.goto('/', {
-      waitUntil: 'domcontentloaded'
+      waitUntil: 'domcontentloaded',
     });
 
     await expect(this.usernameInput).toBeVisible();
@@ -34,13 +34,13 @@ class LoginPage {
     await this.loginButton.click();
 
     await expect(this.page).toHaveURL(/\/dashboard\/index/, {
-      timeout: 30000
+      timeout: 30000,
     });
   }
 
   async assertLoginFailed() {
     await expect(this.loginError).toBeVisible({
-      timeout: 10000
+      timeout: 10000,
     });
   }
 }

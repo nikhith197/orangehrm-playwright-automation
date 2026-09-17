@@ -6,11 +6,11 @@ class PimPage extends BasePage {
     super(page);
 
     this.addEmployeeLink = page.getByRole('link', {
-      name: 'Add Employee'
+      name: 'Add Employee',
     });
 
     this.employeeListLink = page.getByRole('link', {
-      name: 'Employee List'
+      name: 'Employee List',
     });
   }
 
@@ -19,11 +19,7 @@ class PimPage extends BasePage {
   }
 
   async openAddEmployee() {
-    await this.clickAndWaitForURL(
-      this.addEmployeeLink,
-      /\/pim\/addEmployee/,
-      'Add Employee'
-    );
+    await this.clickAndWaitForURL(this.addEmployeeLink, /\/pim\/addEmployee/, 'Add Employee');
   }
 
   async openEmployeeList() {

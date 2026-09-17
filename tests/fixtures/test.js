@@ -53,23 +53,16 @@ const test = base.test.extend({
 
     for (const employee of employees.reverse()) {
       try {
-        Logger.info(
-          `Starting cleanup for employee '${employee.fullName}'`
-        );
+        Logger.info(`Starting cleanup for employee '${employee.fullName}'`);
 
-        const apiEmployee = await apiClient.findEmployeeByName(
-          employee.fullName
-        );
+        const apiEmployee = await apiClient.findEmployeeByName(employee.fullName);
 
         if (!apiEmployee) {
-          Logger.info(
-            `Employee '${employee.fullName}' is already absent`
-          );
+          Logger.info(`Employee '${employee.fullName}' is already absent`);
           continue;
         }
 
-        const employeeId =
-          apiEmployee.empNumber || apiEmployee.id;
+        const employeeId = apiEmployee.empNumber || apiEmployee.id;
 
         if (!employeeId) {
           Logger.warn(
@@ -80,20 +73,13 @@ const test = base.test.extend({
 
         await apiClient.deleteEmployeeById(employeeId);
 
-        await apiClient.assertEmployeeAbsent(
-          employee.fullName
-        );
+        await apiClient.assertEmployeeAbsent(employee.fullName);
 
-        Logger.info(
-          `API cleanup completed for '${employee.fullName}'`
-        );
+        Logger.info(`API cleanup completed for '${employee.fullName}'`);
       } catch (error) {
-        Logger.error(
-          `Cleanup failed for employee '${employee.fullName}'`,
-          {
-            error: error.message,
-          }
-        );
+        Logger.error(`Cleanup failed for employee '${employee.fullName}'`, {
+          error: error.message,
+        });
       }
     }
   },

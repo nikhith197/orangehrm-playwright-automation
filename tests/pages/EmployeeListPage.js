@@ -5,9 +5,7 @@ class EmployeeListPage {
     this.page = page;
 
     // Employee name search field
-    this.employeeNameInput = page
-      .getByRole('textbox', { name: 'Type for hints...' })
-      .first();
+    this.employeeNameInput = page.getByRole('textbox', { name: 'Type for hints...' }).first();
 
     // Search and Reset buttons
     this.searchButton = page.getByRole('button', {
@@ -23,26 +21,20 @@ class EmployeeListPage {
     // Employee table
     this.employeeTable = page.locator('.oxd-table');
 
-    this.employeeRows = page.locator(
-      '.oxd-table-body .oxd-table-row'
-    );
+    this.employeeRows = page.locator('.oxd-table-body .oxd-table-row');
 
     // Delete confirmation dialog
     this.deleteConfirmationDialog = page.getByRole('dialog');
 
-    this.deleteConfirmationButton =
-      this.deleteConfirmationDialog.getByRole('button', {
-        name: /Yes,\s*Delete/i,
-      });
+    this.deleteConfirmationButton = this.deleteConfirmationDialog.getByRole('button', {
+      name: /Yes,\s*Delete/i,
+    });
   }
 
   async assertLoaded() {
-    await expect(this.page).toHaveURL(
-      /\/pim\/viewEmployeeList/,
-      {
-        timeout: 15000,
-      }
-    );
+    await expect(this.page).toHaveURL(/\/pim\/viewEmployeeList/, {
+      timeout: 15000,
+    });
 
     await expect(this.employeeTable).toBeVisible({
       timeout: 15000,
@@ -127,10 +119,7 @@ class EmployeeListPage {
 
     const row = this.getEmployeeRow(employeeOrFullName);
 
-    await expect(
-      row,
-      `Employee '${fullName}' should be visible in the employee list`
-    ).toBeVisible({
+    await expect(row, `Employee '${fullName}' should be visible in the employee list`).toBeVisible({
       timeout: 15000,
     });
   }
@@ -143,12 +132,12 @@ class EmployeeListPage {
 
     const row = this.getEmployeeRow(employeeOrFullName);
 
-    await expect(
-      row,
-      `Employee '${fullName}' should not exist in the employee list`
-    ).toHaveCount(0, {
-      timeout: 10000,
-    });
+    await expect(row, `Employee '${fullName}' should not exist in the employee list`).toHaveCount(
+      0,
+      {
+        timeout: 10000,
+      }
+    );
   }
 
   async openEmployee(employeeOrFullName) {
@@ -163,11 +152,7 @@ class EmployeeListPage {
      *   0 -> Edit
      *   1 -> Delete
      */
-    const editButton = row
-      .locator(
-        '.oxd-icon-button.oxd-table-cell-action-space'
-      )
-      .first();
+    const editButton = row.locator('.oxd-icon-button.oxd-table-cell-action-space').first();
 
     await expect(editButton).toBeVisible({
       timeout: 10000,
@@ -175,12 +160,9 @@ class EmployeeListPage {
 
     await editButton.click();
 
-    await expect(this.page).toHaveURL(
-      /\/pim\/viewPersonalDetails/,
-      {
-        timeout: 15000,
-      }
-    );
+    await expect(this.page).toHaveURL(/\/pim\/viewPersonalDetails/, {
+      timeout: 15000,
+    });
   }
 
   async deleteEmployee(employeeOrFullName) {
@@ -190,16 +172,12 @@ class EmployeeListPage {
       timeout: 15000,
     });
 
-    const actionButtons = row.locator(
-      '.oxd-icon-button.oxd-table-cell-action-space'
-    );
+    const actionButtons = row.locator('.oxd-icon-button.oxd-table-cell-action-space');
 
     const buttonCount = await actionButtons.count();
 
     if (buttonCount < 2) {
-      throw new Error(
-        `Expected at least 2 action buttons, but found ${buttonCount}.`
-      );
+      throw new Error(`Expected at least 2 action buttons, but found ${buttonCount}.`);
     }
 
     // Second action button is Delete

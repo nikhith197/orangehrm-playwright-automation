@@ -24,12 +24,12 @@ module.exports = [
 
     rules: {
       'no-unused-vars': [
-  'error',
-  {
-    argsIgnorePattern: '^(adminSession|_)',
-    varsIgnorePattern: '^_'
-  }
-],
+        'error',
+        {
+          argsIgnorePattern: '^(adminSession|_)',
+          varsIgnorePattern: '^_',
+        },
+      ],
 
       'no-constant-condition': 'error',
       'no-duplicate-imports': 'error',
