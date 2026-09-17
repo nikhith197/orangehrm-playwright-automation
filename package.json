@@ -1,0 +1,28 @@
+{
+  "name": "orangehrm-playwright-senior-qa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Senior QA Automation Engineer technical assessment - Playwright JavaScript framework for OrangeHRM employee lifecycle",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:regression": "playwright test --grep @regression",
+    "test:chromium": "playwright test --project=chromium",
+    "test:firefox": "playwright test --project=firefox",
+    "test:webkit": "playwright test --project=webkit",
+    "report": "playwright show-report",
+    "lint:syntax": "node --check config.js && node --check scripts/run-tests.js && node --check playwright.config.js && node --check tests/fixtures/test.js && node --check tests/pages/LoginPage.js && node --check tests/pages/DashboardPage.js && node --check tests/pages/PimPage.js && node --check tests/pages/EmployeeListPage.js && node --check tests/pages/EmployeeDetailsPage.js && node --check tests/pages/BasePage.js && node --check tests/utils/testData.js && node --check tests/utils/logger.js && node --check tests/utils/employeeActions.js && node --check tests/utils/apiClient.js && node --check tests/employee-create.spec.js && node --check tests/employee-update.spec.js && node --check tests/employee-delete.spec.js && node --check tests/employee-lifecycle.spec.js && node --check tests/role-validation.spec.js",
+    "k6:login": "k6 run k6/login-api.js",
+    "k6:employee": "k6 run k6/employee-create-api.js",
+    "lint": "npx --yes eslint@9.36.0 .",
+    "format:check": "npx --yes prettier@3.6.2 --check .",
+    "test:qa": "node scripts/run-tests.js qa",
+    "test:staging": "node scripts/run-tests.js staging"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "dotenv": "^17.2.1"
+  }
+}
